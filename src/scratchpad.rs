@@ -415,3 +415,48 @@ let input = match File::open(path) {
 */
 
 }
+
+fn main() {
+    // ErrorKind example:
+    // Tries to create a file; if ok, stores the file in a variable
+    // If Error, checks error kind:
+    // if Error kind is NotFound (unlikely for create, but possible), tries to create file under different name
+    // If successful, stores that file in a var
+    // if not successful, panics with custom error "Can't create file".
+    // If the parent error is of any other kind than NotFound, panics with custom error "Problem opening file"
+    
+    let output = File::create("rand.txt");
+    let output = match output {
+        Ok(file) => file,
+        Err(error) => match error.kind(){
+            ErrorKind::NotFound => match File::create
+            ("random.txt"){
+                Ok(fc) => fc,
+                Err(e) => panic!("Can't create file: {:?}", e),
+            },
+            _other_error => panic!("Problem opening file : {:?}", error),
+        },
+    };
+
+}
+
+fn main() {
+    // Iteration borrows values
+    let mut arr_it = [1,2,3,4];
+    for val in arr_it.iter(){
+        println!("{}", val);
+    }
+    let mut iter1 = arr_it.iter();
+    println!("1st : {:?}", iter1.next());
+}
+
+// CLOSURE
+fn main() {
+    let mut samp1 = 5;
+    let print_var_closure = || println!("samp1 = {}", samp1);
+    fn print_var_function() {
+        println!("samp1 = {}", samp1);
+    }
+    print_var_closure(); // This prints
+    print_var_function(); // This errors
+}

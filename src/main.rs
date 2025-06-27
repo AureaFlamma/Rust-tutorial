@@ -21,47 +21,15 @@ mod restaurant;
 use crate::restaurant::order_food;
 
 fn main() {
-    let path = "lines.txt";
+    let mut samp1 = 5;
+    let print_var_closure = || println!("I MUST PRINT {}", samp1);
+    print_var_closure(); // This prints
+    samp1 = 10;
+    let mut change_var = || samp1 += 1;
+    change_var();
+    println!("samp1 = {}", samp1);
+    samp1 = 10;
+    println!("samp1 = {}", samp1);
 
-    // Result has 2 varients Ok and Err
-    // enum Result<T, E> {
-    // Ok(T),
-    // Err(E), }
-    // Where T represents the data typeof the value returns and E
-    // the type of error
-
-    // CREATE FILE
-    let output = File::create(path);
-    // One way of handling errors
-    let mut output = match output {
-        Ok(file) => file,
-        Err(error) => {
-            panic!("Problem creating file : {:?}", error);
-        }
-    };
-
-    // WRITE TO FILE
-    // Another way of handling errors. Panic with custom message when error occurs.
-    write!(output, "Just some \nRandom words").expect("Failed to write to file");
-
-    // READ FILE
-    // Third way of handling errors. Unwrap panics with default message if error occurs. 
-    let input = File::open(path).unwrap();
-    let buffered = BufReader::new(input);
-
-    for line in buffered.lines() {
-        println!("{}", line.unwrap());
-    }
-
-/* 
-// These are equivalent:
-let input = File::open(path).unwrap();
-
-// Same as:
-let input = match File::open(path) {
-    Ok(file) => file,
-    Err(error) => panic!("called `Result::unwrap()` on an `Err` value: {:?}", error),
-};
-*/
 
 }
