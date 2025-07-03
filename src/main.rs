@@ -19,17 +19,19 @@ use std::collections::HashMap;
 // This points to the folder in which the module is.
 mod restaurant;
 use crate::restaurant::order_food;
+use std::thread;
+use std::time::Duration;
 
 fn main() {
-    let mut samp1 = 5;
-    let print_var_closure = || println!("I MUST PRINT {}", samp1);
-    print_var_closure(); // This prints
-    samp1 = 10;
-    let mut change_var = || samp1 += 1;
-    change_var();
-    println!("samp1 = {}", samp1);
-    samp1 = 10;
-    println!("samp1 = {}", samp1);
+    thread::spawn(|| {
+        for i in 1..25 {
+            println!("Spawned thread : {}", i);
+            thread::sleep(Duration::from_millis(1));
+        }
+    });
 
-
+    for i in 1..20{
+        println!("Main thread : {}", i);
+        thread::sleep(Duration::from_millis(1));
+    }
 }

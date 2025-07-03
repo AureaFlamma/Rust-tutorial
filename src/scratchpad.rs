@@ -460,3 +460,50 @@ fn main() {
     print_var_closure(); // This prints
     print_var_function(); // This errors
 }
+
+
+fn main() {
+    let mut samp1 = 5;
+    let print_var_closure = || println!("I MUST PRINT {}", samp1);
+    print_var_closure(); // This prints
+    samp1 = 10;
+    let mut change_var = || samp1 += 1;
+    change_var();
+    println!("samp1 = {}", samp1);
+    samp1 = 10;
+    println!("samp1 = {}", samp1);
+
+}
+
+
+// Closures can be pased to functions
+// NB: the following could have been achieved with functions too
+fn main() {
+    fn use_func<T>(a: i32, b: i32, func: T) -> i32
+    where T:Fn(i32, i32) -> i32 {
+        func(a, b)
+    }
+
+    let sum = |a, b| a+b;
+    let prod = |a, b| a*b;
+    println!("5 + 4 = {}", use_func(5,4,sum));
+    println!("5 * 4 = {}", use_func(5,4,prod));
+}
+
+
+// CONCURRENCY
+
+// The spawn thread never goes up to 24. Rather, the moment
+fn main() {
+    thread::spawn(|| {
+        for i in 1..25 {
+            println!("Spawned thread : {}", i);
+            thread::sleep(Duration::from_millis(1));
+        }
+    });
+
+    for i in 1..20{
+        println!("Main thread : {}", i);
+        thread::sleep(Duration::from_millis(1));
+    }
+}
