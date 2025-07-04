@@ -493,7 +493,7 @@ fn main() {
 
 // CONCURRENCY
 
-// The spawn thread never goes up to 24. Rather, the moment
+// The spawn thread never goes up to 24. Rather, the moment the main thread finishes, the whole thing finishes.
 fn main() {
     thread::spawn(|| {
         for i in 1..25 {
@@ -506,4 +506,21 @@ fn main() {
         println!("Main thread : {}", i);
         thread::sleep(Duration::from_millis(1));
     }
+}
+
+fn main() {
+    let thread1 = thread::spawn(|| {
+        for i in 1..25 {
+            println!("Spawned thread : {}", i);
+            thread::sleep(Duration::from_millis(1));
+        }
+    });
+
+    for i in 1..20{
+        println!("Main thread : {}", i);
+        thread::sleep(Duration::from_millis(1));
+    }
+
+    // This ensures the spawned thread does finish
+    thread1.join().unwrap();
 }
